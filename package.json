@@ -1,0 +1,22 @@
+{
+  "name": "photo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "deploy.js",
+  "type": "module",
+  "scripts": {
+    "build:admin": "node deploy.js admin",
+    "build:view": "node deploy.js view",
+    "build:server": "node deploy.js server",
+    "build": "node deploy.js build"
+  },
+  "author": "xuzhicheng122@163.com",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.2.0",
+    "dotenv": "^16.1.4",
+    "node-scp": "^0.0.22",
+    "ora": "^5.4.1",
+    "ssh2": "^1.13.0"
+  }
+}
