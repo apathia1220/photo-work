@@ -4,12 +4,15 @@ import { QueryOptions, ResultSetHeader } from 'mysql2'
 import { MYSQL_CONF } from '@src/config/config.database'
 
 export const exc = async (sql: string, opt?: Omit<QueryOptions, 'sql'>) => {
+    const conn = mysql.createConnection(MYSQL_CONF)
+    const connection = await conn
     try {
-        const conn = mysql.createConnection(MYSQL_CONF)
-        const [rows, _] = await (await conn).query({ sql, ...opt })
+        const [rows, _] = await connection.query({ sql, ...opt })
         return rows
     } catch (err) {
         logger.err(err, true)
+    } finally {
+        connection.end()
     }
 }
 
@@ -26,6 +29,8 @@ export const batchExc = async (sqlList: string[], opt?: Omit<QueryOptions, 'sql'
         await connection.rollback() // 回滚事务
         logger.err('事务回滚')
         throw err // 抛出错误
+    } finally {
+        connection.end()
     }
 }
 
@@ -48,5 +53,7 @@ export const doubleBatchExc = async (
         await connection.rollback() // 回滚事务
         logger.err('事务回滚')
         throw err // 抛出错误
+    } finally {
+        connection.end()
     }
 }
